@@ -15,7 +15,7 @@ import co.edu.uniandes.dse.TallerPruebas.repositories.PocketRepository;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Clase que implementa la lógica de los bolsillos
+ * Clase que implementa la lógica de la regla 0
  */
 @Slf4j
 @Service

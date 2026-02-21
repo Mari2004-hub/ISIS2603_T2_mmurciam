@@ -14,7 +14,9 @@ import co.edu.uniandes.dse.TallerPruebas.repositories.AccountRepository;
 import co.edu.uniandes.dse.TallerPruebas.repositories.PocketRepository;
 import lombok.extern.slf4j.Slf4j;
 
-
+/**
+ * Clase que implementa la lógica de la regla 1
+ */
 @Slf4j
 @Service
 public class AccountService {
@@ -66,7 +68,7 @@ public class AccountService {
             throw new BusinessLogicException("La cuenta no tiene saldo suficiente para la transferencia");
         }
 
-        // 6. Actualizar saldos
+        // 6. Actualizar saldos, después de mover el dinero, si es que se logro mover el dinero
         accountEntity.get().setSaldo(accountEntity.get().getSaldo() - monto);
         pocketEntity.get().setSaldo(pocketEntity.get().getSaldo() + monto);
         log.info("Termina proceso de transferencia de dinero de la cuenta {} al bolsillo {}", accountId, pocketId);
