@@ -14,9 +14,7 @@ import co.edu.uniandes.dse.TallerPruebas.repositories.AccountRepository;
 import co.edu.uniandes.dse.TallerPruebas.repositories.PocketRepository;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Clase que implementa la lógica de las cuentas (Regla 1)
- */
+
 @Slf4j
 @Service
 public class AccountService {
