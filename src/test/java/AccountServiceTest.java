@@ -72,7 +72,7 @@ public class AccountServiceTest {
      * 1. Éxito: mover dinero de la cuenta al bolsillo con saldo suficiente.
      */
     @Test
-    void testMoverDineroBolsilloSuficiente() throws EntityNotFoundException, BusinessLogicException {
+    void testTransferToPocketWithSufficientBalance() throws EntityNotFoundException, BusinessLogicException {
         AccountEntity account = accountList.get(0);
         PocketEntity pocket = pocketList.get(0);
 
@@ -84,15 +84,16 @@ public class AccountServiceTest {
         assertEquals(500.0, updatedAccount.getSaldo());
         assertEquals(500.0, updatedPocket.getSaldo());
     }
+
     /**
-    * 2. Éxito: mover exactamente un monto igual al saldo de la cuenta.
-    */
+     * 2. Éxito: mover exactamente un monto igual al saldo de la cuenta.
+     */
     @Test
-    void ttestRegla1ExactAmountSuccess() throws EntityNotFoundException, BusinessLogicException {
+    void testTransferExactAmountSuccess() throws EntityNotFoundException, BusinessLogicException {
         AccountEntity account = accountList.get(0);
         PocketEntity pocket = pocketList.get(0);
 
-        double monto = account.getSaldo(); // usar todo el saldo disponible
+        double monto = account.getSaldo();
         accountService.transferToPocket(account.getId(), pocket.getId(), monto);
 
         AccountEntity updatedAccount = entityManager.find(AccountEntity.class, account.getId());
@@ -100,14 +101,13 @@ public class AccountServiceTest {
 
         assertEquals(0.0, updatedAccount.getSaldo());
         assertEquals(monto, updatedPocket.getSaldo());
-}
-
+    }
 
     /**
      * 3. Fallo: mover dinero con insuficiente saldo en la cuenta.
      */
     @Test
-    void testMoverDineroConSaldoInsuficiente() {
+    void testTransferWithInsufficientBalance() {
         assertThrows(BusinessLogicException.class, () -> {
             AccountEntity account = accountList.get(0);
             PocketEntity pocket = pocketList.get(0);
@@ -117,10 +117,10 @@ public class AccountServiceTest {
     }
 
     /**
-     * 4. Fallo: mover dinero desde bolsillo que no existe.
+     * 4. Fallo: mover dinero a un bolsillo que no existe.
      */
     @Test
-    void testMoverDineroBolsilloNoExiste() {
+    void testTransferToNonExistentPocket() {
         assertThrows(EntityNotFoundException.class, () -> {
             AccountEntity account = accountList.get(0);
             accountService.transferToPocket(account.getId(), 0L, 100.0);
@@ -128,13 +128,13 @@ public class AccountServiceTest {
     }
 
     /**
-     *5.  Fallo: mover dinero desde cuenta que no existe.
+     * 5. Fallo: mover dinero desde una cuenta que no existe.
      */
     @Test
-    void testMoverDineroCuentaNoExiste() {
+    void testTransferFromNonExistentAccount() {
         assertThrows(EntityNotFoundException.class, () -> {
-            AccountEntity account = accountList.get(0);
-            accountService.transferToPocket(account.getId(), 0L, 100.0);
+            PocketEntity pocket = pocketList.get(0);
+            accountService.transferToPocket(0L, pocket.getId(), 100.0);
         });
     }
 }
